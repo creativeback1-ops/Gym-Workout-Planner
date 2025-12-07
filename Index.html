@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Gym Workout Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1d4ed8;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e40af;
+            --accent: #22c55e;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: var(--text-main);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 12px 20px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            color: #bfdbfe;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(29, 78, 216, 0.3);
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Info Banner */
+        .info-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+        }
+
+        .info-banner p {
+            font-size: 0.95rem;
+            color: #92400e;
+            margin: 0;
+        }
+
+        /* Section Title */
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        /* Days Grid */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .day-card:hover {
+            box-shadow: 0 12px 24px rgba(29, 78, 216, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .day-card-header {
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+            color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-info {
+            flex: 1;
+        }
+
+        .day-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .day-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 4px 0;
+        }
+
+        .day-meta {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .day-icon {
+            font-size: 2.5rem;
+            margin-left: 12px;
+        }
+
+        .exercises-list {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #fafafa;
+            transition: all 0.2s ease;
+        }
+
+        .exercise-card.expanded {
+            background: #f0f7ff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.12);
+        }
+
+        .card-header {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s ease;
+        }
+
+        .card-header:hover {
+            background: #f3f4f6;
+        }
+
+        .header-left {
+            text-align: left;
+            flex: 1;
+        }
+
+        .exercise-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .exercise-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 2px 0 0;
+        }
+
+        .toggle-icon {
+            color: var(--primary);
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        /* Exercise Details */
+        .card-body {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            background: rgba(13, 110, 253, 0.02);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Video Player */
+        .video-player {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .video-player video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .video-info {
+            background: #e0f2fe;
+            border-left: 4px solid var(--primary);
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        /* Details Sections */
+        .detail-section {
+            margin-bottom: 12px;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-section h5 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-section ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .detail-section li {
+            margin-bottom: 4px;
+        }
+
+        .detail-section li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-icon {
+                font-size: 2rem;
+                margin-left: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">💪 Gym Workout Planner</div>
+            <ul class="nav-menu">
+                <li><a class="nav-link active">Workout</a></li>
+                <li><a class="nav-link">Progress</a></li>
+                <li><a class="nav-link">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>30-Day Beginner Gym Plan</h1>
+                <p class="hero-subtitle">Transform your body in 30 days with this complete beginner-friendly workout program by Yatinder Singh</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">30</div>
+                        <div class="stat-label">Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Exercises</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">Training Days</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Rest Day</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <span>📹</span>
+            <p>Based on Yatinder Singh's Beginner Workout Guide | Each exercise has its own video tutorial</p>
+        </div>
+
+        <!-- Workout Plans -->
+        <section>
+            <h2 class="section-title">Training Schedule</h2>
+            <div class="days-grid" id="daysContainer"></div>
+        </section>
+    </div>
+
+    <script>
+        const workoutData = [
+            {
+                day: 'Day 1 & 4',
+                date: 'Monday & Thursday',
+                focus: 'Chest + Shoulders',
+                icon: '🏋️',
+                duration: '47 mins',
+                exercises: [
+                    {
+                        id: 'day1-ex1',
+                        name: 'Flat Barbell Bench Press',
+                        sets: '3',
+                        reps: '10–15',
+                        timestamp: '~1:45–2:20',
+                        videoFile: 'day1-ex1-bench-press.mp4',
+                        setup: [
+                            'Lie on flat bench with feet flat on floor',
+                            'Grip slightly wider than shoulder-width (about 24 inches)',
+                            'Maintain slight lower-back arch (natural curve)',
+                            'Shoulder blades retracted and on the bench'
+                        ],
+                        execution: [
+                            'Lower bar to chest level (lower sternum) with control',
+                            'No bouncing at the bottom—pause briefly',
+                            'Press up until elbows are nearly locked (not fully locked)',
+                            'Full contraction at top, then repeat'
+                        ],
+                        formCues: [
+                            'Breathe in as you lower, breathe out as you push',
+                            'Elbows at ~45° angle from body',
+                            'No jerking motions or bouncing',
+                            'Feel chest muscle working throughout',
+                            'Keep core tight for stability'
+                        ],
+                        tips: [
+                            'Start with lighter weight to learn the movement',
+                            'Have a spotter if lifting heavy',
+                            'Never lock elbows completely at top',
+                            'Control the descent (3-4 seconds down, 1-2 up)'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex2',
+                        name: 'Low-Incline Dumbbell Press',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~3:00–3:40',
+                        videoFile: 'day1-ex2-incline-press.mp4',
+                        setup: [
+                            'Adjust bench to ~25–30° angle',
+                            'Sit with back flat against bench',
+                            'Feet flat on floor, firmly planted',
+                            'Hold dumbbells at shoulder height (elbows ~90°)',
+                            'Palms facing forward or slightly inward'
+                        ],
+                        execution: [
+                            'Press dumbbells upward and slightly inward',
+                            'Stop just short of lockout (elbows ~80–90° bent)',
+                            'Lower to shoulder level with control',
+                            'Avoid excessive depth (touching shoulders)'
+                        ],
+                        formCues: [
+                            'Protect shoulders—don\'t go too deep into the bottom',
+                            'Feel upper chest and anterior shoulder contraction',
+                            'Full squeeze at top',
+                            'Controlled descent (2-3 seconds)'
+                        ],
+                        tips: [
+                            'Use lighter dumbbells than flat press',
+                            'Incline is harder—adjust weight accordingly',
+                            'Mind–muscle connection is crucial',
+                            'Avoid touching dumbbells at bottom'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex3',
+                        name: 'Pec-Deck Fly (Bent-Arm)',
+                        sets: '2',
+                        reps: '10–15',
+                        timestamp: '~4:20–5:10',
+                        videoFile: 'day1-ex3-pec-deck.mp4',
+                        setup: [
+                            'Adjust seat height so shoulders line up with handles',
+                            'Sit with back flat against backrest',
+                            'Feet flat on floor',
+                            'Elbows bent at ~10–15° (not straight)',
+                            'Grip handles firmly'
+                        ],
+                        execution: [
+                            'Bring both handles together in front of your chest',
+                            'Squeeze chest hard at peak contraction',
+                            'Control return to start with resistance',
+                            'Avoid excessive stretch backward (keep tension)'
+                        ],
+                        formCues: [
+                            'Squeeze and stretch with control',
+                            'No jerking or throwing the weight',
+                            'Full chest contraction at the middle',
+                            'Mind–muscle connection is key',
+                            'Elbows stay bent (never lock them)'
+                        ],
+                        tips: [
+                            'This is an isolation exercise—not for heavy weight',
+                            'Focus on the pump and squeeze',
+                            'Don\'t swing or use momentum',
+                            '12-15 reps with lighter weight > 8 reps heavy'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex4',
+                        name: 'Bent-Arm Dumbbell Pullover',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~6:00–6:50',
+                        videoFile: 'day1-ex4.mp4',
+                        setup: [
+                            'Lie perpendicular on flat bench (head near edge)',
+                            'Hold one dumbbell with both hands above chest',
+                            'Elbows bent at ~10–15° (this is KEY)',
+                            'Feet flat on floor for stability'
+                        ],
+                        execution: [
+                            'Lower dumbbell over and beyond chest',
+                            'Stop when good chest stretch is felt',
+                            'Bring dumbbell back up, squeezing chest',
+                            'Repeat without excessive range (ribs stay down)'
+                        ],
+                        formCues: [
+                            'Elbows stay bent throughout (don\'t straighten)',
+                            'Don\'t lower so deep that shoulders strain',
+                            'Squeeze chest on the way up',
+                            'Control speed (no dropping the weight)',
+                            'Ribs should stay neutral (no flaring)'
+                        ],
+                        tips: [
+                            'Use lighter weight—this is a stretch movement',
+                            'Feel the stretch across chest and shoulders',
+                            'Elbows bent = chest exercise; elbows straight = back',
+                            'Great for chest activation and mobility'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex5',
+                        name: 'Machine Chest Press',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~7:30–8:30',
+                        videoFile: 'day1-ex5.mp4',
+                        setup: [
+                            'Adjust seat so handles are at mid-chest level',
+                            'Sit with back flat against the pad',
+                            'Feet on floor or footrest',
+                            'Grip handles firmly',
+                            'Shoulders relaxed (not shrugged)'
+                        ],
+                        execution: [
+                            'Press handles forward until arms are nearly straight',
+                            'Pause briefly at full extension',
+                            'Return to start with control',
+                            'Keep chest engaged throughout'
+                        ],
+                        formCues: [
+                            'Controlled movement throughout',
+                            'Full range: chest level to full extension',
+                            'Squeeze chest at the end of each rep',
+                            'No jerking or momentum'
+                        ],
+                        tips: [
+                            'Great for beginners—fixed path is safer',
+                            'Higher reps (12-15) work well on machines',
+                            'Perfect for finishing chest after heavy pressing'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex6',
+                        name: 'Plate Loaded Chest Press',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~9:00–10:00',
+                        videoFile: 'day1-ex6.mp4',
+                        setup: [
+                            'Load plates on both sides equally',
+                            'Sit with back against pad',
+                            'Feet firmly planted',
+                            'Grab handles with neutral grip',
+                            'Core tight'
+                        ],
+                        execution: [
+                            'Press forward with controlled movement',
+                            'Full range of motion',
+                            'Pause at the end of press',
+                            'Return with control'
+                        ],
+                        formCues: [
+                            'Smooth, controlled pressing motion',
+                            'Chest stays engaged',
+                            'No jerking or bouncing'
+                        ],
+                        tips: [
+                            'Similar to smith machine but slightly different angle',
+                            'Good finishing exercise for chest day'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex7',
+                        name: 'Dumbbell Side Lateral Raises',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~10:15–11:00',
+                        videoFile: 'day1-ex7.mp4',
+                        setup: [
+                            'Stand with feet shoulder-width apart',
+                            'Hold dumbbells at sides with slight elbow bend',
+                            'Core engaged, shoulders back',
+                            'Neutral spine position'
+                        ],
+                        execution: [
+                            'Raise dumbbells out to sides until arms are parallel to ground',
+                            'Elbows slightly bent throughout (not locked)',
+                            'Pause briefly at top with full contraction',
+                            'Lower back to starting position with control'
+                        ],
+                        formCues: [
+                            'Lead with elbows, not hands',
+                            'Raise to shoulder height only (not higher)',
+                            'Full contraction at top',
+                            'Controlled descent (2-3 seconds)',
+                            'Feel deltoids working, not traps'
+                        ],
+                        tips: [
+                            'Use lighter weight—this is isolation, not heavy pressing',
+                            'Focus on the mind–muscle connection',
+                            'Great for shoulder width and definition',
+                            'Avoid using momentum or swinging'
+                        ]
+                    },
+                    {
+                        id: 'day1-ex8',
+                        name: 'Barbell Upright Row (Traps)',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~11:20–12:00',
+                        videoFile: 'day1-ex8.mp4',
+                        setup: [
+                            'Stand with feet shoulder-width apart',
+                            'Hold barbell with narrow grip (hands 6-8 inches apart)',
+                            'Bar resting at thigh level',
+                            'Arms fully extended',
+                            'Shoulders back, chest up'
+                        ],
+                        execution: [
+                            'Pull barbell straight up toward chin',
+                            'Elbows should flare out to sides',
+                            'Bring bar to just below chin level',
+                            'Squeeze traps at top',
+                            'Lower back to starting position with control'
+                        ],
+                        formCues: [
+                            'Lead with elbows, not hands',
+                            'Full contraction at top',
+                            'Controlled descent',
+                            'Breathe out on pull, in on lower',
+                            'Feel trapezius and shoulder contraction'
+                        ],
+                        tips: [
+                            'Excellent for trapezius development',
+                            'Use moderate weight, not too heavy',
+                            'Perfect finishing exercise for shoulder day',
+                            'Stop just before chin to protect shoulders'
+                        ]
+                    }
+                ]
+            },
+            {
+                day: 'Day 2 & 5',
+                date: 'Tuesday & Friday',
+                focus: 'Biceps, Triceps + Abs',
+                icon: '💪',
+                duration: '50 mins',
+                exercises: [
+                    {
+                        id: 'day2-ex1',
+                        name: 'Barbell Curl',
+                        sets: '3',
+                        reps: '12',
+                        timestamp: '~12:15–13:00',
+                        videoFile: 'day2-ex1-barbell-curl.mp4',
+                        setup: [
+                            'Stand with feet shoulder-width apart',
+                            'Grip barbell exactly shoulder-width (or slightly narrower)',
+                            'Bar at thigh level with arms fully straight',
+                            'Shoulders back (not rounded)',
+                            'Slight knee bend (not locked)'
+                        ],
+                        execution: [
+                            'Curl bar upward using bicep strength',
+                            'Full squeeze at top (bring bar near chin/shoulders)',
+                            'Lower with control to full extension',
+                            'Repeat without swinging or momentum'
+                        ],
+                        formCues: [
+                            'Elbows stay fixed at sides (NO movement)',
+                            'No back swing or body momentum',
+                            'Full stretch at bottom, full squeeze at top',
+                            'Exhale on curl, inhale on lower',
+                            'Only forearms move'
+                        ],
+                        tips: [
+                            'This is the most important bicep exercise',
+                            'Start with lighter weight, perfect form > heavy weight',
+                            'Feel the pump in biceps',
+                            'Never swing the bar'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex2',
+                        name: 'Alternate Dumbbell Curl',
+                        sets: '2',
+                        reps: '12 per arm',
+                        timestamp: '~13:10–14:10',
+                        videoFile: 'day2-ex2.mp4',
+                        setup: [
+                            'Stand with feet shoulder-width apart',
+                            'Hold dumbbells at sides with arms straight',
+                            'Palms facing forward (supinated position)'
+                        ],
+                        execution: [
+                            'Curl one dumbbell up and rotate palm upward (supinate)',
+                            'Bring to shoulder height',
+                            'Squeeze bicep at the top',
+                            'Lower and return to start',
+                            'At halfway point, switch to other arm'
+                        ],
+                        formCues: [
+                            'Supinate (turn palm up) as you curl—critical for bicep',
+                            'Full range: bottom extension to top squeeze',
+                            'Elbows close to body',
+                            'No swinging or momentum'
+                        ],
+                        tips: [
+                            'Alternating makes it harder than regular curls',
+                            'Single arm isolation is great for symmetry',
+                            'Supination (palm rotation) hits biceps harder'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex3',
+                        name: 'V-Bar Push-Down',
+                        sets: '3',
+                        reps: '10–12',
+                        timestamp: '~14:30–15:20',
+                        videoFile: 'day2-ex3.mp4',
+                        setup: [
+                            'Stand facing cable machine',
+                            'Slight forward lean from pelvis (bend ~10–20° forward)',
+                            'Upper arms at 90° bend, elbows close to sides',
+                            'Hold V-bar handle with overhand grip',
+                            'Core engaged'
+                        ],
+                        execution: [
+                            'Press handle down by extending elbows',
+                            'Full lockout at bottom (elbows straight)',
+                            'Squeeze triceps hard',
+                            'Return to starting position with control (don\'t let it snap back)'
+                        ],
+                        formCues: [
+                            'Only forearms move (elbows locked in place)',
+                            'Squeeze triceps at lockout (hold 1 second)',
+                            'Controlled return (resist the pull)',
+                            'Breathe out on press, in on return'
+                        ],
+                        tips: [
+                            'This is the best tricep isolation exercise',
+                            'Focus on the mind–muscle connection',
+                            'Higher reps (12-15) work great for triceps',
+                            'Feel the pump in the back of your arms'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex4',
+                        name: 'Rope Push-Down',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~15:40–16:30',
+                        videoFile: 'day2-ex4.mp4',
+                        setup: [
+                            'Stand facing cable machine',
+                            'Grab rope attachment',
+                            'Elbows close to body',
+                            'Slight forward lean'
+                        ],
+                        execution: [
+                            'Push rope down by extending elbows',
+                            'Spread rope apart at the bottom (adds squeeze)',
+                            'Full extension',
+                            'Return with control'
+                        ],
+                        formCues: [
+                            'Spread the rope to really squeeze triceps',
+                            'Controlled motion',
+                            'Full range of motion'
+                        ],
+                        tips: [
+                            'Rope allows for greater squeeze than V-bar',
+                            'Great for tricep definition',
+                            'Higher reps recommended'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex5',
+                        name: 'Preacher Curls',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~16:50–17:40',
+                        videoFile: 'day2-ex5.mp4',
+                        setup: [
+                            'Sit at preacher bench',
+                            'Rest upper arms on the pad',
+                            'Feet flat on floor',
+                            'Hold EZ bar with shoulder-width grip'
+                        ],
+                        execution: [
+                            'Curl bar upward with full contraction',
+                            'Lower with control',
+                            'Keep elbows on pad throughout'
+                        ],
+                        formCues: [
+                            'Elbows stay on pad',
+                            'Full range of motion',
+                            'Feel bicep stretch at bottom'
+                        ],
+                        tips: [
+                            'Preacher bench forces strict form',
+                            'Great for bicep isolation'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex6',
+                        name: 'Overhead Triceps Extension',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~18:00–18:50',
+                        videoFile: 'day2-ex6.mp4',
+                        setup: [
+                            'Sit on bench',
+                            'Hold dumbbell above head with both hands',
+                            'Elbows bent at ~90°',
+                            'Back straight'
+                        ],
+                        execution: [
+                            'Lower dumbbell behind head by bending elbows',
+                            'Stretch triceps',
+                            'Press back up to starting position',
+                            'Squeeze at the top'
+                        ],
+                        formCues: [
+                            'Controlled movement',
+                            'Full stretch and contraction',
+                            'Elbows stay in place'
+                        ],
+                        tips: [
+                            'Great for long head of triceps',
+                            'Lighter weight for control'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex7',
+                        name: 'Knee-High Crunches',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~19:00–19:50',
+                        videoFile: 'day2-ex7.mp4',
+                        setup: [
+                            'Find knee-high crunches machine',
+                            'Set weight appropriately',
+                            'Position body in machine'
+                        ],
+                        execution: [
+                            'Crunch forward',
+                            'Squeeze abs',
+                            'Return with control'
+                        ],
+                        formCues: [
+                            'Focus on abs contraction',
+                            'Controlled movement'
+                        ],
+                        tips: [
+                            'Great ab exercise',
+                            'Perfect for beginners'
+                        ]
+                    },
+                    {
+                        id: 'day2-ex8',
+                        name: 'Lying Leg Raises',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~20:00–20:50',
+                        videoFile: 'day2-ex8.mp4',
+                        setup: [
+                            'Lie flat on bench or floor',
+                            'Arms at sides or hands under glutes for support',
+                            'Legs straight'
+                        ],
+                        execution: [
+                            'Raise legs up to ~90° (or until lower back leaves bench)',
+                            'Lower back down without touching floor',
+                            'Repeat'
+                        ],
+                        formCues: [
+                            'Focus on lower abs',
+                            'Controlled movement',
+                            'Don\'t swing legs'
+                        ],
+                        tips: [
+                            'Excellent for lower abs',
+                            'Modify by bending knees if needed'
+                        ]
+                    }
+                ]
+            },
+            {
+                day: 'Day 3 & 6',
+                date: 'Wednesday & Saturday',
+                focus: 'Back, Legs + Calves',
+                icon: '🦵',
+                duration: '55 mins',
+                exercises: [
+                    {
+                        id: 'day3-ex1',
+                        name: 'Wide-Grip Lat Pull-Down',
+                        sets: '3',
+                        reps: '10–12',
+                        timestamp: '~20:50–21:40',
+                        videoFile: 'day3-ex1.mp4',
+                        setup: [
+                            'Sit at lat pull-down machine',
+                            'Grip bar wider than shoulder-width (~28 inches)',
+                            'Slight backward lean (10–15°)',
+                            'Knees under pad for support'
+                        ],
+                        execution: [
+                            'Pull bar down toward upper chest',
+                            'Bring bar to just below chin level',
+                            'Full contraction: shoulder blades down and back',
+                            'Control return to full extension (arms almost straight)'
+                        ],
+                        formCues: [
+                            'Mind–muscle connection on lats',
+                            'Shoulders stay down throughout (no shrugging)',
+                            'Full range: maximum stretch to maximum contraction',
+                            'Breathe out on pull, in on return'
+                        ],
+                        tips: [
+                            'One of the most important exercises for back',
+                            'Wide grip emphasizes lats',
+                            'Elbows should flare out naturally'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex2',
+                        name: 'Bodyweight Squats',
+                        sets: '3',
+                        reps: '12–15',
+                        timestamp: '~24:45–25:50',
+                        videoFile: 'day3-ex2-squats.mp4',
+                        setup: [
+                            'Stand with feet shoulder-width apart',
+                            'Toes slightly turned out (~5–10°)',
+                            'Chest upright, hands in front or at sides',
+                            'Weight in heels/mid-foot'
+                        ],
+                        execution: [
+                            'Initiate by sitting back (knees bend naturally)',
+                            'Lower until thighs reach parallel with floor (or deeper)',
+                            'Knees stay behind toes',
+                            'Chest stays up throughout',
+                            'Drive through heels to stand'
+                        ],
+                        formCues: [
+                            'Full range of motion: knees always bent during set',
+                            'Back remains neutral (not rounded)',
+                            'Weight in heels/mid-foot',
+                            'Smooth, controlled descent and ascent',
+                            'Core tight throughout'
+                        ],
+                        tips: [
+                            'The most important leg exercise',
+                            'Go as deep as you can safely',
+                            'Perfect form > more reps',
+                            'Feel the burn in quadriceps'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex2',
+                        name: 'Seated Cable Row',
+                        sets: '2',
+                        reps: '10–12',
+                        timestamp: '~22:00–23:00',
+                        videoFile: 'day3-ex2.mp4',
+                        setup: [
+                            'Sit at cable row machine',
+                            'Feet on footrest or floor',
+                            'Grab handle',
+                            'Slight forward lean'
+                        ],
+                        execution: [
+                            'Row handle toward chest',
+                            'Squeeze shoulder blades together',
+                            'Return with control'
+                        ],
+                        formCues: [
+                            'Full contraction at chest',
+                            'Controlled return',
+                            'Feel back muscles working'
+                        ],
+                        tips: [
+                            'Great for mid-back thickness',
+                            'Complements lat pulldowns'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex3',
+                        name: 'Low Cable Row',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~23:20–24:30',
+                        videoFile: 'day3-ex3.mp4',
+                        setup: [
+                            'Sit at low cable row machine',
+                            'Feet on platform',
+                            'Grab handle'
+                        ],
+                        execution: [
+                            'Row toward chest',
+                            'Squeeze',
+                            'Return controlled'
+                        ],
+                        formCues: [
+                            'Feel lower back engagement',
+                            'Controlled movement'
+                        ],
+                        tips: [
+                            'Targets lower lats'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex5',
+                        name: 'Leg Press (Machine)',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~26:10–27:10',
+                        videoFile: 'day3-ex5.mp4',
+                        setup: [
+                            'Sit in leg press machine',
+                            'Feet on platform shoulder-width apart',
+                            'Back against pad',
+                            'Hands on handles'
+                        ],
+                        execution: [
+                            'Press platform away by extending legs',
+                            'Stop just short of lockout',
+                            'Lower back down with control',
+                            'Depth to ~90° knee bend'
+                        ],
+                        formCues: [
+                            'Controlled movement',
+                            'Full range of motion',
+                            'Knees aligned with toes'
+                        ],
+                        tips: [
+                            'Great for overall leg strength',
+                            'Safer than free-weight squats for beginners'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex6',
+                        name: 'Leg Extensions',
+                        sets: '2',
+                        reps: '12–15',
+                        timestamp: '~27:30–28:30',
+                        videoFile: 'day3-ex6.mp4',
+                        setup: [
+                            'Sit at leg extension machine',
+                            'Adjust seat so knees align with machine axis',
+                            'Feet under pad'
+                        ],
+                        execution: [
+                            'Extend legs forward',
+                            'Full extension (pause briefly)',
+                            'Lower with control'
+                        ],
+                        formCues: [
+                            'Feel quadriceps contract',
+                            'Controlled movement',
+                            'Full range'
+                        ],
+                        tips: [
+                            'Isolation exercise for quads',
+                            'Great finisher for leg day'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex7',
+                        name: 'Standing Calf Raises',
+                        sets: '3',
+                        reps: '15–20',
+                        timestamp: '~28:50–29:40',
+                        videoFile: 'day3-ex7.mp4',
+                        setup: [
+                            'Stand on raised platform or calf raise machine',
+                            'Balls of feet on edge of platform',
+                            'Heels free (hanging off edge)',
+                            'Knees soft (slightly bent)',
+                            'Hold onto machine for balance'
+                        ],
+                        execution: [
+                            'Rise up on toes using calf muscles',
+                            'Lift heels as high as possible',
+                            'Full contraction at top (pause 1 second)',
+                            'Lower heels down below platform level',
+                            'Maximum stretch at bottom'
+                        ],
+                        formCues: [
+                            'Full range: maximum stretch to maximum contraction',
+                            'Use calf muscle strength to drive movement',
+                            'Knees stay soft (not locked)',
+                            'Slow, controlled tempo (no bouncing)',
+                            'Feel the burn in calves'
+                        ],
+                        tips: [
+                            'Calves need high reps to grow',
+                            'Do 15-20+ reps per set',
+                            'Pause at the top for maximum contraction',
+                            'This is the primary calf exercise'
+                        ]
+                    },
+                    {
+                        id: 'day3-ex8',
+                        name: 'Seated Calf Raises',
+                        sets: '2',
+                        reps: '15–20',
+                        timestamp: '~30:00–30:50',
+                        videoFile: 'day3-ex8.mp4',
+                        setup: [
+                            'Sit at calf raise machine',
+                            'Feet on platform',
+                            'Pad over knees'
+                        ],
+                        execution: [
+                            'Raise up on toes',
+                            'Full extension',
+                            'Lower back down'
+                        ],
+                        formCues: [
+                            'Full range',
+                            'Controlled movement',
+                            'Feel calf stretch'
+                        ],
+                        tips: [
+                            'Hits soleus muscle',
+                            'Great for calf development'
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function createExerciseCard(exercise) {
+            return `
+                <div class="exercise-card" data-id="${exercise.id}">
+                    <button class="card-header" onclick="toggleExercise(event)">
+                        <div class="header-left">
+                            <h4 class="exercise-name">${exercise.name}</h4>
+                            <p class="exercise-meta">${exercise.sets} sets · ${exercise.reps} reps · ${exercise.timestamp}</p>
+                        </div>
+                        <div class="toggle-icon">▶</div>
+                    </button>
+                    <div class="card-body" style="display: none;">
+                        <div class="video-player">
+                            <video controls>
+                                <source src="assets/videos/${exercise.videoFile}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div class="video-info">📹 Video: ${exercise.name} (${exercise.timestamp})</div>
+                        
+                        <div class="detail-section">
+                            <h5>Setup</h5>
+                            <ul>
+                                ${exercise.setup.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h5>Execution</h5>
+                            <ul>
+                                ${exercise.execution.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h5>Form Cues</h5>
+                            <ul>
+                                ${exercise.formCues.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h5>💡 Pro Tips</h5>
+                            <ul>
+                                ${exercise.tips.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createDayCard(day) {
+            const exercisesHtml = day.exercises.map(createExerciseCard).join('');
+            return `
+                <article class="day-card">
+                    <div class="day-card-header">
+                        <div class="day-info">
+                            <div class="day-label">${day.day}</div>
+                            <div class="day-text">${day.focus}</div>
+                            <div class="day-meta">${day.date} | ${day.duration}</div>
+                        </div>
+                        <div class="day-icon">${day.icon}</div>
+                    </div>
+                    <div class="exercises-list">
+                        ${exercisesHtml}
+                    </div>
+                </article>
+            `;
+        }
+
+        function toggleExercise(event) {
+            const card = event.currentTarget.closest('.exercise-card');
+            const body = card.querySelector('.card-body');
+            const icon = card.querySelector('.toggle-icon');
+            
+            const isVisible = body.style.display !== 'none';
+            body.style.display = isVisible ? 'none' : 'block';
+            icon.textContent = isVisible ? '▶' : '▼';
+            card.classList.toggle('expanded');
+        }
+
+        // Initialize
+        const container = document.getElementById('daysContainer');
+        container.innerHTML = workoutData.map(createDayCard).join('');
+    </script>
+</body>
+</html>
